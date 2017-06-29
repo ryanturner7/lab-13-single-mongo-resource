@@ -7,7 +7,7 @@ const employerRouter = module.exports = new require('express').Router();
 const Employer = require('../model/employer.js');
 
 // module logic
-employerRouter.post('/api/lists', jsonParser, (req, res, next) => {
+employerRouter.post('/api/employers', jsonParser, (req, res, next) => {
   console.log('hit POST /api/employers');
   new Employer(req.body)
   .save()
@@ -24,18 +24,26 @@ employerRouter.get('/api/lists/:id', (req, res, next) => {
   .catch(next);
 });
 
+employerRouter.put('/api/employers/:id', jsonParser, (req, res, next) => {
+  console.log('PUT route', typeof req.body.name);
+  Employer.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true})
+.then(ship => res.json(ship))
+.catch(next);
+});
 
-employerRouter.get('/api/employers', (req, res, next) => {
-  console.log('Hit /api/employers.');
+employerRouter.delete('/api/employers/:id', (req, res, next) => {
+  Employer.findByIdAndRemove(req.params.id)
+.then(() => res.sendStatus(204))
+.catch(next);
 
-  let bossNumber = Number(req.query.boss);
-  if(!bossNumber || bossNumber < 1) bossNumber = 1;
-  bossNumber--;
-
-  Employer.find({})
-  .sort({title: 'asc'})
-  .skip(bossNumber * 50)
-  .limit(50)
-  .then(employers => res.json(employers))
-  .catch(next);
+  // let bossNumber = Number(req.query.boss);
+  // if(!bossNumber || bossNumber < 1) bossNumber = 1;
+  // bossNumber--;
+  //
+  // Employer.find({})
+  // .sort({title: 'asc'})
+  // .skip(bossNumber * 50)
+  // .limit(50)
+  // .then(employers => res.json(employers))
+  // .catch(next);
 });
