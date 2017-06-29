@@ -29,7 +29,7 @@ server.start = () => {
       server.http = app.listen(process.env.PORT, () => {
         server.isOn = true;
         console.log('The server is up.', process.env.PORT);
-        resolve;
+        resolve();
       });
       return;
     }
