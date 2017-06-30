@@ -8,7 +8,8 @@ const mockEmployer = module.exports = {};
 
 mockEmployer.createOne = () => {
   return new Employer({
-    company: faker.company.name(),
+    company: faker.company.companyName(),
+    name: faker.name.findName(),
   })
   .save();
 };
