@@ -1,9 +1,12 @@
 'use strict';
 
-const mongoose = require('mongoose');
-const Employer = require('./employer.js');
+const faker = require('faker');
+const mockEmployer = require('./../mock-employer.js');
+const Employee = require('../../model/employee.js');
 
-const employeeSchema = mongoose.Schema({
+const mockEmployee = module.exports = {}
+
+mock.createOne = () => {
   title: {type: String, required: true, unique: true},
   employer: [{type: mongoose.Schema.Types.ObjectId, ref: 'employer'}],
   name: {type: String, required: true},
