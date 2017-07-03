@@ -102,7 +102,7 @@ describe('Testing /api/employers', () => {
         })
         .catch((err) => console.error(err));
       });
-      it('should return a 200 status and array of 3 employers', () => {
+      it('Should return a 200 status and array of 3 employers', () => {
         return superagent.get(`${API_URL}/api/employers`)
         .then(res => {
           console.log(res.body.map(employer => employer.name));
@@ -113,6 +113,64 @@ describe('Testing /api/employers', () => {
             expect(employer.name).toExist();
           });
         });
+      });
+    });
+
+    describe('Testing PUT api/employers/:id', () => {
+      beforeEach(() => {
+        return mockEmployer.createOne()
+        .then((employer) => {
+          tempEmployer = employer;
+        });
+      });
+      it('Should return a 200 status and an updated employer.', () => {
+        let data = {name: 'Ryan'};
+        return superagent.put(`${API_URL}/api/employers/${tempEmployer._id}`)
+        .send(data)
+        .then(res => {
+          expect(res.status).toEqual(200);
+          expect(res.body.company).toEqual(data.company);
+          expect(res.body.emplyee).toEqual(tempEmployer.employee);
+
+        });
+      });
+
+      it('Should return a 404 status for invalid id.', () => {
+        let data = {name: 'Ryan'};
+        return superagent.put(`${API_URL}/api/employers/invalid-id`)
+      .send(data)
+      .catch(res => {
+        expect(res.status).toEqual(404);
+      });
+      });
+
+      it('Should return a 400 status with invalid body.', () => {
+        let data = {name: 'Ryan'};
+        return superagent.put(`${API_URL}/api/employers/${tempEmployer._id}`)
+    .send(data)
+    .catch(res => {
+      expect(res.status).toEqual(400);
+    });
+      });
+    });
+    describe('Testing DELETE api/emplyers/:id', () => {
+      beforeEach(() => {
+        return mockEmployer.createOne()
+      .then((employer) => {
+        tempEmployer = employer;
+      });
+      });
+      it('Should return a 204 status for valid id', () => {
+        return superagent.delete(`${API_URL}/api/employers/${tempEmployer._id}`)
+    .catch(res => {
+      expect(res.status).toEqual(204);
+    });
+      });
+      it('Should return a 404 status for valid id', () => {
+        return superagent.delete(`${API_URL}/api/employers/invalid-id`)
+    .catch(res => {
+      expect(res.status).toEqual(404);
+    });
       });
     });
   });
