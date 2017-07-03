@@ -13,6 +13,7 @@ const app = express();
 app.use(morgan('dev'));
 app.use(cors());
 
+app.use(require('../route/employee-router.js'));
 app.use(require('../route/employer-router.js'));
 
 app.all('/api/*', (req, res, next) => {
