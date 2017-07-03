@@ -102,6 +102,7 @@ describe('Testing /api/employers', () => {
         })
         .catch((err) => console.error(err));
       });
+
       it('should return a 200 status and array of 3 employers', () => {
         return superagent.get(`${API_URL}/api/employers`)
         .then(res => {
@@ -111,6 +112,7 @@ describe('Testing /api/employers', () => {
           res.body.forEach(employer => {
             expect(employer._id).toExist();
             expect(employer.name).toExist();
+            
           });
         });
       });
